@@ -18,7 +18,7 @@
   command: /usr/bin/fish -c 'alias kubectl kubecolor; and funcsave kubectl'
 
 - name: install kubectl completions
-  command: /usr/bin/fish -c 'evanlucas/fish-kubectl-completions'
+  command: /usr/bin/fish -c 'fisher install evanlucas/fish-kubectl-completions'
 
 - name: set kubectl --export alias
   copy:
