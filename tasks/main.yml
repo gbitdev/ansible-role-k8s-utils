@@ -1,5 +1,6 @@
 ---
 - name: install jq and yq
+  become: yes
   apt:
     pkg:
       - jq
