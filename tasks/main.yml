@@ -9,10 +9,10 @@
 
 - name: install kubecolor
   shell: | 
-    mkdir -p $HOME/.lcal/bin && \
-    curl {{ url }} -o /tmp/kubecolor.tar.gz && \
-    tar xzf /tmp/kubecolor.tar.gz -C /tmp && \
-    cp /tmp/kubecolor $HOME/.local/bin/
+    mkdir -p $HOME/.local/bin && \
+    curl -sSL {{ url }} |
+    tar xzf - kubecolor && \
+    mv kubecolor $HOME/.local/bin/
 
 - name: set kubecolor alias
   command: /usr/bin/fish -c 'alias kubectl kubecolor; and funcsave kubectl'
