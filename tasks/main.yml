@@ -1,10 +1,11 @@
 ---
-- name: install jq and yq
+- name: install jq
   become: yes
-  apt:
-    pkg:
-      - jq
-      - yq
+  apt: name=jq state=present
+
+- name: install yq
+  become: yes
+  pip: name=yq
 
 - name: install kubecolor
   shell: | 
