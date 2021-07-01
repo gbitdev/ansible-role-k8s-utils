@@ -1,0 +1,28 @@
+---
+- name: install jq and yq
+  apt:
+    pkg:
+      - jq
+      - yq
+
+- name: install kubecolor
+  shell: | 
+    mkdir -p $HOME/.lcal/bin && \
+    curl {{ url }} -o /tmp/kubecolor.tar.gz && \
+    tar xzf /tmp/kubecolor.tar.gz -C /tmp && \
+    cp /tmp/kubecolor $HOME/.local/bin/
+
+- name: set kubecolor alias
+  command: /usr/bin/fish -c 'alias kubectl kubecolor; and funcsave kubectl'
+
+- name: install kubectl completions
+  command: /usr/bin/fish -c 'evanlucas/fish-kubectl-completions'
+
+- name: set kubectl --export alias
+  copy:
+    dest: ""
+    content: |
+      function kubectl-export --wraps='kubectl get' --description 'alias of kubectl --export'
+        kubectl get $argv -ojson | jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid) | .metadata.creationTimestamp=null';
+      end
+
