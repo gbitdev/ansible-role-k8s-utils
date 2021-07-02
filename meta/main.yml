@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name: k8s-utils
+  role_name: k8sutils
   author: Marcin Gontarek
   description: Install k8s utils
   company: ""
