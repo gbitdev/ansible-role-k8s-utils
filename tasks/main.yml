@@ -1,29 +1,30 @@
 ---
-- name: install jq
+- name: install jq and pip3
   become: yes
-  apt: name=jq state=present
+  apt:
+    install_recommends: no
+    pkg:
+      - jq
+      - python3-pip
 
 - name: install yq
   become: yes
-  pip: name=yq executable=pip3
+  pip: 
+    name: yq 
+    executable: pip3
 
-- name: install kubecolor
-  shell: | 
-    mkdir -p $HOME/.local/bin && \
-    curl -sSL {{ url }} |
-    tar xzf - kubecolor && \
-    mv kubecolor $HOME/.local/bin/
+- name: Install latest versions of tools from github
+  include_role:
+    name: gbitdev.get_latest_release_form_github
+  loop: "{{ util_repos + repos.split(',') | default([]) }}"
+  vars:
+    repo: "{{ item }}"
+    # selector: "{{ selector }}"
 
 - name: set kubecolor alias
   command: /usr/bin/fish -c 'alias kubectl kubecolor; and funcsave kubectl'
+  creates: "~/.config/fish/functions/kubectl.fish"
 
 - name: install kubectl completions
   command: /usr/bin/fish -c 'fisher install evanlucas/fish-kubectl-completions'
-
-- name: set kubectl --export alias
-  copy:
-    dest: "$HOME/.config/fish/functions/kubectl-export.fish"
-    content: |
-      function kubectl-export --wraps='kubectl get' --description 'alias of kubectl --export'
-        kubectl get $argv -ojson | jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid) | .metadata.creationTimestamp=null';
-      end
+  creates: "~/.config/fish/completions/kubectl.fish"

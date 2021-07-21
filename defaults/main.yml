@@ -1,0 +1,5 @@
+---
+util_repos:
+  - dty1er/kubecolor
+  - derailed/k9s
+# selector: 'Linux_x86_64'

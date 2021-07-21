@@ -1,3 +1,0 @@
----
-version: "0.0.20"
-url: https://github.com/dty1er/kubecolor/releases/download/v{{ version }}/kubecolor_{{ version }}_Linux_x86_64.tar.gz
